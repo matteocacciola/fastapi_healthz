@@ -5,15 +5,13 @@ from .registry import HealthCheckRegistry
 from .models import HealthCheckStatusEnum
 
 
-def health_check_route(factory: HealthCheckRegistry) -> Callable:
+def health_check_route(registry: HealthCheckRegistry) -> Callable:
     """
     This function is passed to the add_api_route with the built factory.
 
     When called, the endpoint method within, will be called and it will run the job bound to the factory.
     The results will be parsed and sent back to the requestor via JSON.
     """
-
-    _factory = factory
 
     def encode_json(value: Any) -> Any:
         """
@@ -24,7 +22,7 @@ def health_check_route(factory: HealthCheckRegistry) -> Callable:
         return jsonable_encoder({} if value is None else value)
 
     def endpoint() -> JSONResponse:
-        res = _factory.check()
+        res = registry.check()
         if res["status"] == HealthCheckStatusEnum.UNHEALTHY:
             return JSONResponse(content=encode_json(res), status_code=500)
         return JSONResponse(content=encode_json(res), status_code=200)

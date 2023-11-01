@@ -3,7 +3,8 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckAbstract(ABC):
-    def __init__(self, tags: list[str] | None = None):
+    def __init__(self, service: str | None = None, tags: list[str] | None = None):
+        self._service = service
         self._tags = tags
 
     @abstractmethod
@@ -23,4 +24,8 @@ class HealthCheckAbstract(ABC):
 
     @property
     def tags(self) -> list[str]:
-        return self._tags if self._tags else [self.service]
+        if self._tags:
+            return self._tags
+        if self.service:
+            return [self.service]
+        return []

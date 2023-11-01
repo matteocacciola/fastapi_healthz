@@ -4,24 +4,15 @@ from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
 
 
-class HealthCheckSQLAlchemy(HealthCheckAbstract):
-    def __init__(
-        self,
-        driver: str,
-        username: str,
-        password: str,
-        host: str,
-        database: str,
-        port: int | None = 3306,
-        tags: list[str] | None = None
-    ):
+class HealthCheckDatabase(HealthCheckAbstract):
+    def __init__(self, uri: str, tags: list[str] | None = None):
         super().__init__(tags=tags)
 
-        self.__uri = f"{driver}://{username}:{password}@{host}:{port}/{database}"
+        self.__uri = uri
 
     @property
     def service(self) -> str:
-        return "db"
+        return self._service if self._service is not None else "db"
 
     @property
     def connection_uri(self) -> str | None:

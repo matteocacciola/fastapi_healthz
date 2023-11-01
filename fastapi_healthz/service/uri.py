@@ -5,9 +5,14 @@ from .abstract import HealthCheckAbstract
 
 class HealthCheckUri(HealthCheckAbstract):
     def __init__(
-        self, uri: str, healthy_code: int = 200, unhealthy_code: int = 500, tags: list[str] | None = None
+        self,
+        uri: str,
+        service: str | None = None,
+        tags: list[str] | None = None,
+        healthy_code: int = 200,
+        unhealthy_code: int = 500
     ) -> None:
-        super().__init__(tags=tags)
+        super().__init__(service=service, tags=tags)
 
         self.__connection_uri = uri
         self.__healthy_code = healthy_code
@@ -15,7 +20,7 @@ class HealthCheckUri(HealthCheckAbstract):
 
     @property
     def service(self) -> str:
-        return "uri"
+        return self._service if self._service is not None else "uri"
 
     @property
     def connection_uri(self) -> str | None:

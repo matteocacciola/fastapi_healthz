@@ -22,7 +22,7 @@ from fastapi_healthz import (
     HealthCheckRabbitMQ,
     HealthCheckRedis,
     HealthCheckUri,
-    HealthCheckSQLAlchemy,
+    HealthCheckDatabase,
     health_check_route,
 )
 
@@ -32,15 +32,15 @@ app = FastAPI()
 _healthChecks = HealthCheckRegistry()
 
 # SQLAlchemy
-_healthChecks.add(HealthCheckSQLAlchemy(driver="mysql", username="user", password="pwd", host="localhost", port=3306, database="test"))
+_healthChecks.add(HealthCheckDatabase(uri="dialect+driver://username:password@host:port/database"))
 # RabbitMQ
 _healthChecks.add(HealthCheckRabbitMQ(host="localhost", port=5672, vhost="", username="username", password="pwd", ssl=True))
 # Redis
-_healthChecks.add(HealthCheckRedis(host="localhost", database="test", port=6379, password="pwd"))
+_healthChecks.add(HealthCheckRedis(uri="redis://[password:]host:port/database"))
 # This will check external URI and validate the response that is returned.
 _healthChecks.add(HealthCheckUri(uri="https://www.reddit.com/r/aww.json"))
 
-app.add_api_route('/health', endpoint=health_check_route(factory=_healthChecks))
+app.add_api_route('/health', endpoint=health_check_route(registry=_healthChecks))
 
 ```
 

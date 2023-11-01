@@ -7,22 +7,14 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckRedis(HealthCheckAbstract):
-    def __init__(
-        self,
-        host: str,
-        database: str,
-        port: int | None = 6379,
-        password: str | None = None,
-        tags: list[str] | None = None
-    ):
-        super().__init__(tags=tags)
+    def __init__(self, uri: str, service: str | None = None, tags: list[str] | None = None):
+        super().__init__(service=service, tags=tags)
 
-        password = "" if password is None else f":{password}@"
-        self.__uri = f"redis://{'' if password is None else password}{host}:{port}/{database}"
+        self.__uri = uri
 
     @property
     def service(self) -> str:
-        return "redis"
+        return self._service if self._service is not None else "redis"
 
     @property
     def connection_uri(self) -> str | None:
