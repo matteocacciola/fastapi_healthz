@@ -22,7 +22,8 @@ class HealthCheckDatabase(HealthCheckAbstract):
         res: HealthCheckStatusEnum = HealthCheckStatusEnum.UNHEALTHY
 
         engine = create_engine(self.__uri)
-        with sessionmaker(autocommit=False, autoflush=False, bind=engine) as session:
+        Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        with Session() as session:
             try:
                 session.execute(text("SELECT 1"))
                 res = HealthCheckStatusEnum.HEALTHY
