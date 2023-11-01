@@ -5,8 +5,8 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckDatabase(HealthCheckAbstract):
-    def __init__(self, uri: str, tags: list[str] | None = None):
-        super().__init__(tags=tags)
+    def __init__(self, uri: str, service: str | None = None, tags: list[str] | None = None):
+        super().__init__(service=service, tags=tags)
 
         self.__uri = uri
 
