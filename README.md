@@ -7,9 +7,11 @@ This core module doesn't include any service checkers by default, but it offers 
 reason for housing various modules separately is to accommodate the distinct dependencies required for each, ensuring
 that you only import the specific packages you need, thereby preventing any unnecessary package bloat.
 
+**This package is Pydantic v2 compliant**.
+
 ## Install
 
-`pip install fastapi-healthcheckz` or `poetry add fastapi-healthcheckz`
+`pip install fastapi-healthz` or `poetry add fastapi-healthz`
 
 ## Adding Health Checks
 
