@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastapi-healthz"
-version = "0.2.4"
+version = "0.2.5"
 description = "A module to have a FastAPI HealthCheck for database, RabbitMQ server, Redis or external URI to validate their healths."
 authors = ["Matteo Cacciola <matteo.cacciola@gmail.com>"]
 license = "MIT"
