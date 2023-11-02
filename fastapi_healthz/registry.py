@@ -38,9 +38,10 @@ class HealthCheckRegistry:
         """
 
         def fnc(x: HealthCheckEntityModel) -> HealthCheckEntityModel:
-            x.status = x.status.value
-            x.time_taken = str(x.time_taken)
-            return x
+            y = dict(x)
+            y["status"] = x.status.value
+            y["time_taken"] = str(x.time_taken)
+            return y
 
         self.__health.entities = [fnc(i) for i in self.__health.entities]
         self.__health.status = str(self.__health.status)
