@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fastapi-healthz"
-version = "0.3"
+version = "0.3.1"
 description = "A module to have a FastAPI HealthCheck for database, RabbitMQ server, Redis, MongoDB or external URI to validate their healths."
 authors = ["Matteo Cacciola <matteo.cacciola@gmail.com>"]
 license = "MIT"
@@ -14,8 +14,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 pika = "^1.3.2"
-fastapi = "^0.104.0"
-pydantic = "^2.4.2"
+fastapi = "^0.111.0"
+pydantic = "^2.7.4"
 requests = "^2.31.0"
 aioredis = "^2.0.1"
 sqlalchemy = "^2.0.22"
