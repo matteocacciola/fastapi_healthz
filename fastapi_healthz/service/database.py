@@ -1,5 +1,9 @@
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
+try:
+    from sqlalchemy import create_engine, text
+    from sqlalchemy.orm import sessionmaker
+except ImportError:
+    raise ImportError("You must install sqlalchemy to use Database health check")
+
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
 

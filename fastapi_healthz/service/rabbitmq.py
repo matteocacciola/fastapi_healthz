@@ -1,5 +1,9 @@
 from ssl import SSLContext, PROTOCOL_TLSv1_2
-import pika
+try:
+    import pika
+except ImportError:
+    raise ImportError("You must install pika to use RabbitMQ health check")
+
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
 

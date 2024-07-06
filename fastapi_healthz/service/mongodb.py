@@ -1,5 +1,8 @@
 from typing import Any
-from pymongo import MongoClient
+try:
+    from pymongo import MongoClient
+except ImportError:
+    raise ImportError("You must install pymongo to use MongoDB health check")
 
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum

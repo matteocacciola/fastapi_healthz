@@ -1,4 +1,5 @@
 from requests import get
+
 from ..models import HealthCheckStatusEnum
 from .abstract import HealthCheckAbstract
 

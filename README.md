@@ -11,7 +11,21 @@ that you only import the specific packages you need, thereby preventing any unne
 
 ## Install
 
-`pip install fastapi-healthz` or `poetry add fastapi-healthz`
+`pip install fastapi-healthz` or `poetry add fastapi-healthz`.
+
+Eventually, you can partially install the package by running
+
+`pip install fastapi-healthz[redis]`
+
+`pip install fastapi-healthz[rabbitmq]`
+
+`pip install fastapi-healthz[database]`
+
+`pip install fastapi-healthz[uri]`
+
+`pip install fastapi-healthz[mongodb]`
+
+to install only the package you really need, with the required dependencies.
 
 ## Adding Health Checks
 

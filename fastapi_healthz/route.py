@@ -1,6 +1,7 @@
 from typing import Callable, Any
 from starlette.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+
 from .registry import HealthCheckRegistry
 from .models import HealthCheckStatusEnum
 

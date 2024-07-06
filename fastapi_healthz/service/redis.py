@@ -1,7 +1,11 @@
 import asyncio
-import aioredis
 import time
 import random
+try:
+    import aioredis
+except ImportError:
+    raise ImportError("You must install aioredis to use Redis health check")
+
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
 
