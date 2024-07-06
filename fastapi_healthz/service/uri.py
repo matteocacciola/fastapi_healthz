@@ -1,4 +1,7 @@
-from requests import get
+try:
+    from requests import get
+except ImportError:
+    get = None
 
 from ..models import HealthCheckStatusEnum
 from .abstract import HealthCheckAbstract
@@ -28,6 +31,9 @@ class HealthCheckUri(HealthCheckAbstract):
         return self.__connection_uri
 
     def check_health(self) -> HealthCheckStatusEnum:
+        if get is None:
+            raise ImportError("requests is not installed. Install it with `pip install fastapi-healthz[uri]`.")
+
         res = get(url=self.__connection_uri, headers={"User-Agent": "FastAPI HealthCheck"})
         if res.status_code == self.__healthy_code:
             return HealthCheckStatusEnum.HEALTHY

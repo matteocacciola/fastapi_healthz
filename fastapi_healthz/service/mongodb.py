@@ -2,7 +2,7 @@ from typing import Any
 try:
     from pymongo import MongoClient
 except ImportError:
-    raise ImportError("You must install pymongo to use MongoDB health check")
+    MongoClient = None
 
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
@@ -32,6 +32,9 @@ class HealthCheckMongoDb(HealthCheckAbstract):
         return f"mongodb://{self.__host}:{self.__port}" if self.__host and self.__port else None
 
     def check_health(self) -> HealthCheckStatusEnum:
+        if MongoClient is None:
+            raise ImportError("pymongo is not installed. Install it with `pip install fastapi-healthz[mongodb]`.")
+
         res: HealthCheckStatusEnum = HealthCheckStatusEnum.UNHEALTHY
 
         try:

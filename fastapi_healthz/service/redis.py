@@ -4,7 +4,7 @@ import random
 try:
     import aioredis
 except ImportError:
-    raise ImportError("You must install aioredis to use Redis health check")
+    aioredis = None
 
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
@@ -25,6 +25,9 @@ class HealthCheckRedis(HealthCheckAbstract):
         return self.__uri
 
     def check_health(self) -> HealthCheckStatusEnum:
+        if aioredis is None:
+            raise ImportError("aioredis is not installed. Install it with `pip install fastapi-healthz[redis]`.")
+
         res: HealthCheckStatusEnum = HealthCheckStatusEnum.UNHEALTHY
 
         try:

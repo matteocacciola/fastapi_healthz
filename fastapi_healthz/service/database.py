@@ -2,7 +2,9 @@ try:
     from sqlalchemy import create_engine, text
     from sqlalchemy.orm import sessionmaker
 except ImportError:
-    raise ImportError("You must install sqlalchemy to use Database health check")
+    create_engine = None
+    text = None
+    sessionmaker = None
 
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
@@ -23,6 +25,9 @@ class HealthCheckDatabase(HealthCheckAbstract):
         return self.__uri
 
     def check_health(self) -> HealthCheckStatusEnum:
+        if create_engine is None or text is None or sessionmaker is None:
+            raise ImportError("SQLAlchemy is not installed. Install it with `pip install fastapi-healthz[database]`.")
+
         res: HealthCheckStatusEnum = HealthCheckStatusEnum.UNHEALTHY
 
         engine = create_engine(self.__uri)

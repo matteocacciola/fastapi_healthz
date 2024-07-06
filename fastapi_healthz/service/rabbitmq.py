@@ -2,7 +2,7 @@ from ssl import SSLContext, PROTOCOL_TLSv1_2
 try:
     import pika
 except ImportError:
-    raise ImportError("You must install pika to use RabbitMQ health check")
+    pika = None
 
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
@@ -38,6 +38,9 @@ class HealthCheckRabbitMQ(HealthCheckAbstract):
         return f"amqp://{self.__username}:{self.__password}@{self.__host}:{str(self.__port)}"
 
     def check_health(self) -> HealthCheckStatusEnum:
+        if pika is None:
+            raise ImportError("pika is not installed. Install it with `pip install fastapi-healthz[rabbitmq]`.")
+
         res: HealthCheckStatusEnum = HealthCheckStatusEnum.UNHEALTHY
         try:
             parameters = pika.ConnectionParameters(

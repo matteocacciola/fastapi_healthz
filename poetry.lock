@@ -77,7 +77,7 @@ files = [
 name = "charset-normalizer"
 version = "3.3.2"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
-optional = false
+optional = true
 python-versions = ">=3.7.0"
 files = [
     {file = "charset-normalizer-3.3.2.tar.gz", hash = "sha256:f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"},
@@ -973,7 +973,7 @@ files = [
 name = "requests"
 version = "2.32.3"
 description = "Python HTTP for Humans."
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6"},
@@ -1254,7 +1254,7 @@ files = [
 name = "urllib3"
 version = "2.2.2"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "urllib3-2.2.2-py3-none-any.whl", hash = "sha256:a448b2f64d686155468037e1ace9f2d2199776e17f0a46610480d311f73e3472"},
@@ -1506,12 +1506,14 @@ files = [
 ]
 
 [extras]
+all = ["aioredis", "pika", "pymongo", "requests", "sqlalchemy"]
 database = ["sqlalchemy"]
 mongodb = ["pymongo"]
 rabbitmq = ["pika"]
 redis = ["aioredis"]
+uri = ["requests"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "7b9e2d28a443d8b47106b8bdb5ba49fba5b9a690e06da4c93486957ea230cc13"
+content-hash = "52e9fbc5aa5b4e03686c1f0e9730358e444d62e9c77d1e3a51d77474559bb5f6"
