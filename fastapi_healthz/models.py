@@ -4,6 +4,9 @@ from pydantic import BaseModel
 
 
 class HealthCheckStatusEnum(BaseEnum):
+    def __str__(self):
+        return str(self.value)
+
     HEALTHY = "Healthy"
     UNHEALTHY = "Unhealthy"
 
