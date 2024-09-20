@@ -24,7 +24,7 @@ def health_check_route(registry: HealthCheckRegistry) -> Callable:
 
     def endpoint() -> JSONResponse:
         res = registry.check()
-        if res["status"] == HealthCheckStatusEnum.UNHEALTHY:
+        if res["status"] == str(HealthCheckStatusEnum.UNHEALTHY):
             return JSONResponse(content=encode_json(res), status_code=500)
         return JSONResponse(content=encode_json(res), status_code=200)
 

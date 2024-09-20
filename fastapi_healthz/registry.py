@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Any
 
 from .models import HealthCheckStatusEnum, HealthCheckModel, HealthCheckEntityModel
 from .service import HealthCheckAbstract
@@ -38,9 +39,9 @@ class HealthCheckRegistry:
         This goes and convert python objects to something a json object.
         """
 
-        def fnc(x: HealthCheckEntityModel) -> HealthCheckEntityModel:
+        def fnc(x: HealthCheckEntityModel) -> dict[str, Any]:
             y = dict(x)
-            y["status"] = x.status.value
+            y["status"] = str(x.status)
             y["time_taken"] = str(x.time_taken)
             return y
 
