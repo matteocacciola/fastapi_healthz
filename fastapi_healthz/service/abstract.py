@@ -22,3 +22,8 @@ class HealthCheckAbstract(ABC):
     @abstractmethod
     def tags(self) -> list[str]:
         pass
+
+    @property
+    @abstractmethod
+    def comments(self) -> list[str]:
+        pass

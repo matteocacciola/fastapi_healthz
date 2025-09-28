@@ -26,6 +26,10 @@ class HealthCheckDatabase(HealthCheckAbstract):
     def tags(self) -> list[str]:
         return ["database"]
 
+    @property
+    def comments(self) -> list[str]:
+        return []
+
     def check_health(self) -> HealthCheckStatusEnum:
         if create_engine is None or text is None or sessionmaker is None:
             raise ImportError("SQLAlchemy is not installed. Install it with `pip install fastapi-healthz[database]`.")

@@ -26,6 +26,10 @@ class HealthCheckRedis(HealthCheckAbstract):
     def tags(self) -> list[str]:
         return ["redis", "cache", "database"]
 
+    @property
+    def comments(self) -> list[str]:
+        return []
+
     def check_health(self) -> HealthCheckStatusEnum:
         if aioredis is None:
             raise ImportError("aioredis is not installed. Install it with `pip install fastapi-healthz[redis]`.")

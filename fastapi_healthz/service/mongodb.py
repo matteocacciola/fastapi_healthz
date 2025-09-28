@@ -26,6 +26,10 @@ class HealthCheckMongoDb(HealthCheckAbstract):
     def tags(self) -> list[str]:
         return ["mongodb", "database"]
 
+    @property
+    def comments(self) -> list[str]:
+        return []
+
     def check_health(self) -> HealthCheckStatusEnum:
         if MongoClient is None:
             raise ImportError("pymongo is not installed. Install it with `pip install fastapi-healthz[mongodb]`.")

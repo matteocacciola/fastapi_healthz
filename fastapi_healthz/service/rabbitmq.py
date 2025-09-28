@@ -37,6 +37,10 @@ class HealthCheckRabbitMQ(HealthCheckAbstract):
     def tags(self) -> list[str]:
         return ["rabbitmq"]
 
+    @property
+    def comments(self) -> list[str]:
+        return []
+
     def check_health(self) -> HealthCheckStatusEnum:
         if pika is None:
             raise ImportError("pika is not installed. Install it with `pip install fastapi-healthz[rabbitmq]`.")
