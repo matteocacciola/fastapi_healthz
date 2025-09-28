@@ -1,13 +1,11 @@
-import asyncio
-import time
-import random
 try:
-    import aioredis
+    from redis import Redis
 except ImportError:
-    aioredis = None
+    Redis = None
 
 from .abstract import HealthCheckAbstract
 from ..models import HealthCheckStatusEnum
+from ..utils import run_sync_async
 
 
 class HealthCheckRedis(HealthCheckAbstract):
@@ -31,23 +29,14 @@ class HealthCheckRedis(HealthCheckAbstract):
         return []
 
     def check_health(self) -> HealthCheckStatusEnum:
-        if aioredis is None:
-            raise ImportError("aioredis is not installed. Install it with `pip install fastapi-healthz[redis]`.")
+        if Redis is None:
+            raise ImportError("redis is not installed. Install it with `pip install fastapi-healthz[redis]`.")
 
         res: HealthCheckStatusEnum = HealthCheckStatusEnum.UNHEALTHY
-
         try:
-            redis = aioredis.from_url(self.__uri)
-            test_key = 'health_check_' + str(random.random()) + str(time.time())
+            db = Redis.from_url(self.__uri, socket_connect_timeout=5, socket_timeout=5)
 
-            asyncio.run(redis.set(test_key, 'value'))
-            result = asyncio.run(redis.get(test_key))
-
-            asyncio.run(redis.delete(test_key))
-            status = result == 'value'
-            redis.close()
-            asyncio.run(redis.wait_closed())
-
+            status = run_sync_async(db.ping)
             if status:
                 res = HealthCheckStatusEnum.HEALTHY
         except Exception:
