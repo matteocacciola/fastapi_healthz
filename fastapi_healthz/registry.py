@@ -7,7 +7,7 @@ from .service import HealthCheckAbstract
 
 class HealthCheckRegistry:
     def __init__(self) -> None:
-        self.__health_items: list[HealthCheckAbstract] = list()
+        self.__health_items: list[HealthCheckAbstract] = []
         self.__health: HealthCheckModel | None = None
         self.__entity_start_time: datetime | None = None
         self.__entity_stop_time: datetime | None = None
@@ -16,6 +16,9 @@ class HealthCheckRegistry:
 
     def add(self, item: HealthCheckAbstract) -> None:
         self.__health_items.append(item)
+
+    def add_many(self, items: list[HealthCheckAbstract]) -> None:
+        self.__health_items.extend(items)
 
     def __start_timer(self, entity_timer: bool) -> None:
         if entity_timer:
@@ -47,7 +50,7 @@ class HealthCheckRegistry:
 
         self.__health.entities = [fnc(i) for i in self.__health.entities]
         self.__health.status = str(self.__health.status)
-        self.__health.total_time_taken = str(self.__health.total_time_taken)
+        self.__health.total_time_taken = self.__health.total_time_taken
 
         return dict(self.__health)
 
@@ -56,7 +59,7 @@ class HealthCheckRegistry:
         self.__start_timer(False)
         for i in self.__health_items:
             # Generate the model
-            item = HealthCheckEntityModel(service=i.service, tags=i.tags)
+            item = HealthCheckEntityModel(service=i.service, tags=i.tags, comments=i.comments)
 
             # Track how long the entity took to respond
             self.__start_timer(True)
@@ -66,7 +69,7 @@ class HealthCheckRegistry:
 
             # if we have one dependency unhealthy, the service in unhealthy
             if item.status == HealthCheckStatusEnum.UNHEALTHY:
-                self.__health.status = HealthCheckStatusEnum.UNHEALTHY
+                self.__health.status = str(HealthCheckStatusEnum.UNHEALTHY)
 
             self.__health.entities.append(item)
         self.__stop_timer(False)

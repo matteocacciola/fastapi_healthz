@@ -1,5 +1,6 @@
 from datetime import timedelta
 from enum import Enum as BaseEnum
+from typing import Any
 from pydantic import BaseModel
 
 
@@ -16,9 +17,10 @@ class HealthCheckEntityModel(BaseModel):
     status: HealthCheckStatusEnum = HealthCheckStatusEnum.HEALTHY
     time_taken: timedelta | None = None
     tags: list[str] = []
+    comments: list[str] = []
 
 
 class HealthCheckModel(BaseModel):
-    status: HealthCheckStatusEnum = HealthCheckStatusEnum.HEALTHY
+    status: str = str(HealthCheckStatusEnum.HEALTHY)
     total_time_taken: timedelta | None = None
-    entities: list[HealthCheckEntityModel] = []
+    entities: list[dict[str, Any]] = []
