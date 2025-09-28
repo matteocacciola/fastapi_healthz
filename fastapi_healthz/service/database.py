@@ -11,18 +11,20 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckDatabase(HealthCheckAbstract):
-    def __init__(self, uri: str, service: str | None = None, tags: list[str] | None = None):
-        super().__init__(service=service, tags=tags)
-
+    def __init__(self, uri: str):
         self.__uri = uri
 
     @property
     def service(self) -> str:
-        return self._service if self._service is not None else "db"
+        return "db"
 
     @property
     def connection_uri(self) -> str | None:
         return self.__uri
+
+    @property
+    def tags(self) -> list[str]:
+        return ["database"]
 
     def check_health(self) -> HealthCheckStatusEnum:
         if create_engine is None or text is None or sessionmaker is None:

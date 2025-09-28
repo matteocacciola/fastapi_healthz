@@ -9,27 +9,22 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckMongoDb(HealthCheckAbstract):
-    def __init__(
-        self,
-        host: str | None,
-        port: str | None,
-        service: str | None = None,
-        tags: list[str] | None = None,
-        **kwargs: Any
-    ):
-        super().__init__(service=service, tags=tags)
-
+    def __init__(self, host: str | None, port: str | None, **kwargs: Any):
         self.__host = host
         self.__port = port
         self.__kwargs = kwargs
 
     @property
     def service(self) -> str:
-        return self._service if self._service is not None else "mongodb"
+        return "mongodb"
 
     @property
     def connection_uri(self) -> str | None:
         return f"mongodb://{self.__host}:{self.__port}" if self.__host and self.__port else None
+
+    @property
+    def tags(self) -> list[str]:
+        return ["mongodb", "database"]
 
     def check_health(self) -> HealthCheckStatusEnum:
         if MongoClient is None:

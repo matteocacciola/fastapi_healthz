@@ -3,10 +3,6 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckAbstract(ABC):
-    def __init__(self, service: str | None = None, tags: list[str] | None = None):
-        self._service = service
-        self._tags = tags
-
     @abstractmethod
     def check_health(self) -> HealthCheckStatusEnum:
         """Requests data from the endpoint to validate health."""
@@ -23,9 +19,6 @@ class HealthCheckAbstract(ABC):
         pass
 
     @property
+    @abstractmethod
     def tags(self) -> list[str]:
-        if self._tags:
-            return self._tags
-        if self.service:
-            return [self.service]
-        return []
+        pass

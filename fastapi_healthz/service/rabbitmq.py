@@ -17,11 +17,7 @@ class HealthCheckRabbitMQ(HealthCheckAbstract):
         password: str,
         ssl: bool = True,
         port: int | None = 5672,
-        service: str | None = None,
-        tags: list[str] | None = None
     ):
-        super().__init__(service=service, tags=tags)
-
         self.__host = host
         self.__port = port
         self.__vhost = vhost
@@ -31,11 +27,15 @@ class HealthCheckRabbitMQ(HealthCheckAbstract):
 
     @property
     def service(self) -> str:
-        return self._service if self._service is not None else "rabbitmq"
+        return "rabbitmq"
 
     @property
     def connection_uri(self) -> str | None:
         return f"amqp://{self.__username}:{self.__password}@{self.__host}:{str(self.__port)}"
+
+    @property
+    def tags(self) -> list[str]:
+        return ["rabbitmq"]
 
     def check_health(self) -> HealthCheckStatusEnum:
         if pika is None:
