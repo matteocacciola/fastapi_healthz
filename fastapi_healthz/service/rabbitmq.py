@@ -12,9 +12,9 @@ class HealthCheckRabbitMQ(HealthCheckAbstract):
     def __init__(
         self,
         host: str,
-        vhost: str,
-        username: str,
-        password: str,
+        vhost: str | None = "/",
+        username: str | None = None,
+        password: str | None = None,
         ssl: bool = True,
         port: int | None = 5672,
     ):
@@ -31,7 +31,8 @@ class HealthCheckRabbitMQ(HealthCheckAbstract):
 
     @property
     def connection_uri(self) -> str | None:
-        return f"amqp://{self.__username}:{self.__password}@{self.__host}:{str(self.__port)}"
+        secure = "s" if self.__ssl else ""
+        return f"amqp{secure}://{self.__host}:{str(self.__port)}"
 
     @property
     def tags(self) -> list[str]:
