@@ -43,7 +43,7 @@ class HealthCheckRegistry:
         """
 
         def fnc(x: HealthCheckEntityModel) -> dict[str, Any]:
-            y = dict(x)
+            y = x.model_dump()
             y["status"] = str(x.status)
             y["time_taken"] = str(x.time_taken)
             return y
@@ -52,7 +52,7 @@ class HealthCheckRegistry:
         self.__health.status = str(self.__health.status)
         self.__health.total_time_taken = self.__health.total_time_taken
 
-        return dict(self.__health)
+        return self.__health.model_dump()
 
     def check(self) -> dict:
         self.__health = HealthCheckModel()
