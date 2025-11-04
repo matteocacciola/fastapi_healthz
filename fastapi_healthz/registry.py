@@ -48,11 +48,12 @@ class HealthCheckRegistry:
             y["time_taken"] = str(x.time_taken)
             return y
 
-        self.__health.entities = [fnc(i) for i in self.__health.entities]
-        self.__health.status = str(self.__health.status)
-        self.__health.total_time_taken = self.__health.total_time_taken
+        health_dict = self.__health.model_dump()
+        health_dict["entities"] = [fnc(i) for i in self.__health.entities]
+        health_dict["status"] = str(self.__health.status)
+        health_dict["total_time_taken"] = str(self.__health.total_time_taken)
 
-        return self.__health.model_dump()
+        return health_dict
 
     def check(self) -> dict:
         self.__health = HealthCheckModel()
