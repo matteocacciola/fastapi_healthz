@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Any
 
 from .models import HealthCheckStatusEnum, HealthCheckModel, HealthCheckEntityModel
 from .service import HealthCheckAbstract
@@ -37,24 +36,6 @@ class HealthCheckRegistry:
             return self.__entity_stop_time - self.__entity_start_time
         return self.__total_stop_time - self.__total_start_time
 
-    def __dump_model(self) -> dict:
-        """
-        This goes and convert python objects to something a json object.
-        """
-
-        def fnc(x: HealthCheckEntityModel) -> dict[str, Any]:
-            y = x.model_dump()
-            y["status"] = str(x.status)
-            y["time_taken"] = str(x.time_taken)
-            return y
-
-        health_dict = self.__health.model_dump()
-        health_dict["entities"] = [fnc(i) for i in self.__health.entities]
-        health_dict["status"] = str(self.__health.status)
-        health_dict["total_time_taken"] = str(self.__health.total_time_taken)
-
-        return health_dict
-
     def check(self) -> dict:
         self.__health = HealthCheckModel()
         self.__start_timer(False)
@@ -64,7 +45,7 @@ class HealthCheckRegistry:
 
             # Track how long the entity took to respond
             self.__start_timer(True)
-            item.status = i.check_health()
+            item.status = str(i.check_health())
             self.__stop_timer(True)
             item.time_taken = self.__get_time_taken(True)
 
@@ -76,4 +57,4 @@ class HealthCheckRegistry:
         self.__stop_timer(False)
         self.__health.total_time_taken = self.__get_time_taken(False)
 
-        return self.__dump_model()
+        return self.__health.model_dump(mode="json")

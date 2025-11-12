@@ -25,6 +25,8 @@ Eventually, you can partially install the package by running
 
 `pip install fastapi-healthz[mongodb]`
 
+`pip install fastapi-healthz[s3]`
+
 to install only the package you really need, with the required dependencies.
 
 ## Adding Health Checks
@@ -37,6 +39,7 @@ from fastapi_healthz import (
     HealthCheckRegistry,
     HealthCheckRabbitMQ,
     HealthCheckRedis,
+    HealthCheckS3,
     HealthCheckUri,
     HealthCheckDatabase,
     health_check_route,
@@ -53,6 +56,8 @@ _healthChecks.add(HealthCheckDatabase(uri="dialect+driver://username:password@ho
 _healthChecks.add(HealthCheckRabbitMQ(host="localhost", port=5672, vhost="", username="username", password="pwd", ssl=True))
 # Redis
 _healthChecks.add(HealthCheckRedis(uri="redis://[password:]host:port/database"))
+# S3
+_healthChecks.add(HealthCheckS3(endpoint="http://localhost:9000", access_key="access_key", secret_key="secret_key"))
 # This will check external URI and validate the response that is returned.
 _healthChecks.add(HealthCheckUri(uri="https://www.reddit.com/r/aww.json"))
 

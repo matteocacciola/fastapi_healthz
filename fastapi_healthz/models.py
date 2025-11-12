@@ -1,26 +1,34 @@
 from datetime import timedelta
-from enum import Enum as BaseEnum
 from typing import Any
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_serializer
+
+from .utils import Enum as BaseEnum
 
 
 class HealthCheckStatusEnum(BaseEnum):
-    def __str__(self):
-        return str(self.value)
-
-    HEALTHY = "Healthy"
-    UNHEALTHY = "Unhealthy"
+    HEALTHY = "healthy"
+    UNHEALTHY = "unhealthy"
 
 
 class HealthCheckEntityModel(BaseModel):
     service: str
-    status: HealthCheckStatusEnum = HealthCheckStatusEnum.HEALTHY
-    time_taken: timedelta | None = None
-    tags: list[str] = []
-    comments: list[str] = []
+    status: str = Field(default=str(HealthCheckStatusEnum.HEALTHY))
+    time_taken: timedelta = Field(default=timedelta())
+    tags: list[str] = Field(default_factory=list)
+    comments: list[str] = Field(default_factory=list)
+
+    @field_serializer("time_taken")
+    def serialize_time_taken(self, time: timedelta) -> str:
+        # Pydantic will now call this to serialize the timedelta field
+        return str(time)
 
 
 class HealthCheckModel(BaseModel):
-    status: str = str(HealthCheckStatusEnum.HEALTHY)
-    total_time_taken: timedelta | None = None
-    entities: list[dict[str, Any]] = []
+    status: str = Field(default=str(HealthCheckStatusEnum.HEALTHY))
+    total_time_taken: timedelta = Field(default=timedelta())
+    entities: list[dict[str, Any]] = Field(default_factory=list)
+
+    @field_serializer("total_time_taken")
+    def serialize_total_time_taken(self, time: timedelta) -> str:
+        # Pydantic will now call this to serialize the timedelta field
+        return str(time)
