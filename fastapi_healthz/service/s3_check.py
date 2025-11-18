@@ -9,10 +9,11 @@ from ..models import HealthCheckStatusEnum
 
 
 class HealthCheckS3(HealthCheckAbstract):
-    def __init__(self, endpoint: str, access_key: str, secret_key: str):
-        self._endpoint = endpoint
-        self._access_key = access_key
-        self._secret_key = secret_key
+    def __init__(self, endpoint: str, access_key: str, secret_key: str, ssl: bool):
+        self.__endpoint = endpoint
+        self.__access_key = access_key
+        self.__secret_key = secret_key
+        self.__ssl = ssl
 
     @property
     def service(self) -> str:
@@ -20,7 +21,7 @@ class HealthCheckS3(HealthCheckAbstract):
 
     @property
     def connection_uri(self) -> str | None:
-        return self._endpoint
+        return self.__endpoint
 
     @property
     def tags(self) -> list[str]:
@@ -39,9 +40,10 @@ class HealthCheckS3(HealthCheckAbstract):
         try:
             s3_client = boto3.client(
                 "s3",
-                endpoint_url=self._endpoint,
-                aws_access_key_id=self._access_key,
-                aws_secret_access_key=self._secret_key,
+                endpoint_url=self.__endpoint,
+                aws_access_key_id=self.__access_key,
+                aws_secret_access_key=self.__secret_key,
+                verify=self.__ssl,
             )
             s3_client.list_buckets()
             res = HealthCheckStatusEnum.HEALTHY
