@@ -53,7 +53,7 @@ class HealthCheckRegistry:
             if item.status == HealthCheckStatusEnum.UNHEALTHY:
                 self.__health.status = str(HealthCheckStatusEnum.UNHEALTHY)
 
-            self.__health.entities.append(item)
+            self.__health.entities.append(item.model_dump(mode="json"))
         self.__stop_timer(False)
         self.__health.total_time_taken = self.__get_time_taken(False)
 
